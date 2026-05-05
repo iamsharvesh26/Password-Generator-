@@ -1,0 +1,327 @@
+<script>
+    // FIX: Give icon & button different IDs
+    document.getElementById('generateBtn').addEventListener('click', generatePassword);
+    document.getElementById('generateIcon').addEventListener('click', generatePassword);
+
+    document.getElementById('copyBtn').addEventListener('click', copyPassword);
+    document.getElementById('copyIcon').addEventListener('click', copyPassword);
+
+    function generatePassword() {
+        const length = document.getElementById('length').value;
+        const includeUppercase = document.getElementById('uppercase').checked;
+        const includeLowercase = document.getElementById('lowercase').checked;
+        const includeNumbers = document.getElementById('numbers').checked;
+        const includeSymbols = document.getElementById('symbols').checked;
+
+        const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const lower = 'abcdefghijklmnopqrstuvwxyz';
+        const numbers = '0123456789';
+        const symbols = '!@#$%^&*()_+[]{}|;:,.<>?';
+
+        let allChars = '';
+        if (includeUppercase) allChars += upper;
+        if (includeLowercase) allChars += lower;
+        if (includeNumbers) allChars += numbers;
+        if (includeSymbols) allChars += symbols;
+
+        let password = '';
+        for (let i = 0; i < length; i++) {
+            password += allChars.charAt(Math.floor(Math.random() * allChars.length));
+        }
+
+        document.getElementById('password').value = password;
+    }
+
+    function copyPassword() {
+        const password = document.getElementById('password');
+        password.select();
+        document.execCommand('copy');
+        alert('Password copied to clipboard!');
+    }
+</script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Password Generator</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0f24, #081a30, #0b213f);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .container {
+            width: 420px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+            animation: drop 1s ease;
+        }
+
+        @keyframes drop {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+
+        #password {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: none;
+            margin-bottom: 12px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            color: #00ffd5;
+            letter-spacing: 2px;
+        }
+
+        .btn-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        button, .icon-btn {
+            width: 48%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: 0.3s;
+            background: linear-gradient(135deg, #00c9ff, #92fe9d);
+            color: #000;
+        }
+
+        button:hover, .icon-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .icon-controls {
+            text-align: center;
+            margin: 10px 0 18px 0;
+        }
+
+        .icon-controls i {
+            font-size: 24px;
+            margin: 0 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: 0.3s;
+        }
+
+        .icon-controls i:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.15);
+        }
+
+        h2 {
+            margin-top: 10px;
+            margin-bottom: 12px;
+            font-size: 20px;
+            border-bottom: 1px solid #fff3;
+            padding-bottom: 6px;
+            text-align: center;
+        }
+
+        .option {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+        }
+
+        input[type="number"] {
+            width: 90px;
+            padding: 6px;
+            border-radius: 8px;
+            border: none;
+            text-align: center;
+        }
+
+        /* Strength Meter */
+        .strength-box {
+            margin-top: 20px;
+        }
+
+        .strength-bar {
+            height: 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            margin-top: 6px;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: 0.5s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Password Generator</h1>
+
+        <input type="text" id="password" readonly>
+
+        <div class="icon-controls">
+            <i id="generateIcon" title="Generate Password" class="fa-solid fa-arrows-rotate"></i>
+            <i id="copyIcon" title="Copy Password" class="fa-solid fa-copy"></i>
+        </div>
+
+        <div class="btn-row">
+            <button id="generateBtn">Generate</button>
+            <button id="copyBtn">Copy</button>
+        </div>
+
+        <h2>Customize Password</h2>
+
+        <div class="option">
+            <label>Password Length</label>
+            <input type="number" id="length" value="12" min="8" max="32">
+        </div>
+
+        <div class="option"><label>Uppercase</label><input type="checkbox" id="uppercase" checked></div>
+        <div class="option"><label>Lowercase</label><input type="checkbox" id="lowercase" checked></div>
+        <div class="option"><label>Numbers</label><input type="checkbox" id="numbers" checked></div>
+        <div class="option"><label>Symbols</label><input type="checkbox" id="symbols" checked></div>
+
+        <div class="strength-box">
+            <label>Password Strength</label>
+            <div class="strength-bar">
+                <div class="strength-fill" id="strengthFill"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const passwordBox = document.getElementById("password");
+        const strengthFill = document.getElementById("strengthFill");
+
+        const generateBtn = document.getElementById("generateBtn");
+        const copyBtn = document.getElementById("copyBtn");
+        const generateIcon = document.getElementById("generateIcon");
+        const copyIcon = document.getElementById("copyIcon");
+
+        generateBtn.addEventListener("click", generatePassword);
+        generateIcon.addEventListener("click", generatePassword);
+
+        copyBtn.addEventListener("click", copyPassword);
+        copyIcon.addEventListener("click", copyPassword);
+
+        function generatePassword() {
+            const length = document.getElementById("length").value;
+            const includeUpper = document.getElementById("uppercase").checked;
+            const includeLower = document.getElementById("lowercase").checked;
+            const includeNum = document.getElementById("numbers").checked;
+            const includeSym = document.getElementById("symbols").checked;
+
+            const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const lower = "abcdefghijklmnopqrstuvwxyz";
+            const numbers = "0123456789";
+            const symbols = "!@#$%^&*()_+[]{},.<>?/|";
+
+            let pool = "";
+            let guaranteed = "";
+
+            if (includeUpper) { pool += upper; guaranteed += randomChar(upper); }
+            if (includeLower) { pool += lower; guaranteed += randomChar(lower); }
+            if (includeNum) { pool += numbers; guaranteed += randomChar(numbers); }
+            if (includeSym) { pool += symbols; guaranteed += randomChar(symbols); }
+
+            if (pool === "") {
+                alert("Select at least one option!");
+                return;
+            }
+
+            let password = guaranteed;
+
+            while (password.length < length) {
+                password += randomChar(pool);
+            }
+
+            password = shuffle(password);
+            passwordBox.value = password;
+
+            updateStrength(password.length, includeUpper, includeLower, includeNum, includeSym);
+        }
+
+        function randomChar(str) {
+            return str[Math.floor(Math.random() * str.length)];
+        }
+
+        function shuffle(str) {
+            return [...str].sort(() => Math.random() - 0.5).join("");
+        }
+
+        function copyPassword() {
+            passwordBox.select();
+            document.execCommand("copy");
+            alert("Password copied!");
+        }
+
+        function updateStrength(len, up, low, num, sym) {
+            let score = 0;
+            if (len >= 12) score++;
+            if (up) score++;
+            if (low) score++;
+            if (num) score++;
+            if (sym) score++;
+
+            const width = (score / 5) * 100;
+
+            strengthFill.style.width = width + "%";
+
+            if (score <= 2) strengthFill.style.background = "red";
+            else if (score === 3) strengthFill.style.background = "orange";
+            else if (score === 4) strengthFill.style.background = "yellow";
+            else strengthFill.style.background = "lime";
+        }
+    </script>
+
+</body>
+
+</html>
